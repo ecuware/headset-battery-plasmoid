@@ -173,6 +173,13 @@ PlasmoidItem {
             anchors.centerIn: parent
             text: root.displayText()
             verticalAlignment: Text.AlignVCenter
+            color: {
+                if (root.batteryStatus === "charging") return "#4CAF50";
+                if (root.batteryLevel < 0) return "white";
+                if (root.batteryLevel <= 30) return "#F44336";
+                if (root.batteryLevel <= 50) return "#FFC107";
+                return "#4CAF50";
+            }
         }
     }
 
