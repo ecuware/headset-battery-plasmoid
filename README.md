@@ -21,29 +21,42 @@ A simple KDE Plasma system tray widget to display headset battery status using H
 # Arch Linux
 sudo pacman -S headsetcontrol
 
-# Other distros: https://github.com/Sapd/HeadsetControl#installation
+# Ubuntu/Debian
+sudo apt install headsetcontrol
+
+# Fedora
+sudo dnf install headsetcontrol
+
+# Build from source: https://github.com/Sapd/HeadsetControl#building-from-source
 ```
 
 ## Installation
 
-### Option 1: Manual Install (Recommended)
+### Step 1: Install Plasmoid
 
 ```bash
 # Create local plasmoid directory
-mkdir -p ~/.local/share/plasma/plasmoids/com.cachy.headsetbattery
+mkdir -p ~/.local/share/plasma/plasmoids/org.kde.headsetbattery
 
-# Copy files
-cp -r * ~/.local/share/plasma/plasmoids/com.cachy.headsetbattery/
+# Clone or download this repository, then copy files
+git clone https://github.com/ecuware/headset-battery-plasmoid.git
+cp -r headset-battery-plasmoid/* ~/.local/share/plasma/plasmoids/org.kde.headsetbattery/
 
 # Restart Plasma
 systemctl --user restart plasma-plasmashell
 ```
 
-### Option 2: Add to System Tray
+### Step 2: Add to System Tray
 
+**Option A: Automatic (first run)**
+- Log out and log back in, or restart your computer
+- The widget should appear automatically
+
+**Option B: Manual**
 1. Right-click on system tray → "System Tray Settings"
 2. Go to "Entries" tab
-3. Find "Headset Battery" and enable it
+3. Find "Headset Battery" in the list
+4. Enable it
 
 ## Configuration
 
@@ -51,12 +64,13 @@ The plasmoid works out of the box. Default settings:
 - Refresh interval: 15 seconds
 - Command: `headsetcontrol -b -o json`
 
-### To Modify Settings
+### To Customize
 
 Edit `contents/ui/main.qml`:
 
 ```qml
 // Change refresh interval (in milliseconds)
+// Default: 15000 (15 seconds)
 interval: 15000
 
 // Change headsetcontrol command if needed
@@ -70,12 +84,23 @@ See [HeadsetControl device list](https://github.com/Sapd/HeadsetControl#supporte
 ## Troubleshooting
 
 ### Icon not showing
-- Make sure headsetcontrol is installed: `headsetcontrol -b`
-- Check if your headset is connected and detected
+1. Make sure headsetcontrol is installed: `headsetcontrol -b`
+2. Check if your headset is connected and detected
+3. Check system tray settings: Right-click tray → System Tray Settings → Entries
 
 ### Still not working
 - Restart Plasma: `systemctl --user restart plasma-plasmashell`
-- Check logs: `journalctl --user -u plasma-plasmashell | grep headsetbattery`
+- Check logs: `journalctl --user -u plasma-plasmashell | grep -i headset`
+
+### Multiple headset users
+If you have multiple headsets, you may need to specify the device. Check HeadsetControl documentation.
+
+## Uninstall
+
+```bash
+rm -rf ~/.local/share/plasma/plasmoids/org.kde.headsetbattery
+systemctl --user restart plasma-plasmashell
+```
 
 ## License
 

@@ -1,7 +1,7 @@
 {
     "KPackageStructure": "Plasma/Applet",
     "KPlugin": {
-        "Id": "com.cachy.headsetbattery",
+        "Id": "org.kde.headsetbattery",
         "Name": "Headset Battery",
         "Description": "Shows headset battery using HeadsetControl",
         "Icon": "battery",
