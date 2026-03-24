@@ -64,17 +64,57 @@ The plasmoid works out of the box. Default settings:
 - Refresh interval: 15 seconds
 - Command: `headsetcontrol -b -o json`
 
-### To Customize
+### Find Your Device ID
+
+If you have multiple headsets or need to specify a device:
+
+```bash
+# Run this command to see your connected device
+headsetcontrol
+```
+
+Output example:
+```
+Found 1 supported device(s):
+ SteelSeries Arctis 7+ [0x1038:0x220e]
+```
+
+The format is `vendorid:productid` = `0x1038:0x220e`
+
+### Customize Settings
 
 Edit `contents/ui/main.qml`:
 
+#### Change Refresh Interval
 ```qml
-// Change refresh interval (in milliseconds)
+// Line 18: Change refresh interval (in milliseconds)
 // Default: 15000 (15 seconds)
 interval: 15000
+```
 
-// Change headsetcontrol command if needed
-property string command: "headsetcontrol -b -o json"
+#### Specify a Device
+```qml
+// Line 19: Add device ID if you have multiple headsets
+// Format: headsetcontrol -d vendorid:productid -b -o json
+property string command: "headsetcontrol -d 0x1038:0x220e -b -o json"
+```
+
+#### Common Device IDs
+
+| Headset | Device ID |
+|---------|-----------|
+| SteelSeries Arctis 7+ | 0x1038:0x220e |
+| SteelSeries Arctis 7 | 0x1038:0x12ad |
+| SteelSeries Arctis Pro Wireless | 0x1038:0x12b6 |
+| Logitech G533 | 0x046d:0x0a66 |
+| Logitech G935 | 0x046d:0x0a9e |
+| Corsair Virtuoso RGB | 0x1b1c:0x1b2c |
+
+See [HeadsetControl supported devices](https://github.com/Sapd/HeadsetControl#supported-devices) for full list.
+
+After editing:
+```bash
+systemctl --user restart plasma-plasmashell
 ```
 
 ## Supported Headsets
@@ -92,8 +132,8 @@ See [HeadsetControl device list](https://github.com/Sapd/HeadsetControl#supporte
 - Restart Plasma: `systemctl --user restart plasma-plasmashell`
 - Check logs: `journalctl --user -u plasma-plasmashell | grep -i headset`
 
-### Multiple headset users
-If you have multiple headsets, you may need to specify the device. Check HeadsetControl documentation.
+### Multiple headsets
+If you have multiple supported headsets, you must specify the device ID in the command. See "Specify a Device" section above.
 
 ## Uninstall
 
