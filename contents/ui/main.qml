@@ -143,26 +143,14 @@ PlasmoidItem {
     Plasmoid.status: PlasmaCore.Types.ActiveStatus
 
     compactRepresentation: Item {
-        implicitWidth: row.implicitWidth
+        implicitWidth: label.implicitWidth + PlasmaCore.Units.smallSpacing
         implicitHeight: PlasmaCore.Units.iconSizes.small
 
-        RowLayout {
-            id: row
+        PlasmaComponents.Label {
+            id: label
             anchors.centerIn: parent
-            spacing: PlasmaCore.Units.smallSpacing
-
-            Image {
-                width: PlasmaCore.Units.iconSizes.small
-                height: PlasmaCore.Units.iconSizes.small
-                source: "image://icon/" + root.batteryIconName()
-                fillMode: Image.PreserveAspectFit
-                smooth: true
-            }
-
-            PlasmaComponents.Label {
-                text: root.displayText()
-                verticalAlignment: Text.AlignVCenter
-            }
+            text: root.displayText()
+            verticalAlignment: Text.AlignVCenter
         }
     }
 
