@@ -9,6 +9,9 @@ A simple KDE Plasma system tray widget to display headset battery status using H
 - Supports SteelSeries Arctis and other supported headsets
 - Minimal popup-free design
 - Auto-refreshes every 15 seconds
+- Low battery notifications (when below 20%)
+- Charging status indicator (different icon when charging)
+- Auto-starts on login (once added to system tray)
 
 ## Requirements
 
@@ -90,6 +93,18 @@ Edit `contents/ui/main.qml`:
 // Line 18: Change refresh interval (in milliseconds)
 // Default: 15000 (15 seconds)
 interval: 15000
+```
+
+#### Change Low Battery Threshold
+```qml
+// Line 20: Change when to send notification (default: 20%)
+lowBatteryThreshold: 20
+```
+
+#### Disable Low Battery Notifications
+```qml
+// Set to -1 to disable
+lowBatteryThreshold: -1
 ```
 
 #### Specify a Device

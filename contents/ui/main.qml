@@ -16,6 +16,8 @@ PlasmoidItem {
     property string lastRaw: ""
     property string lastUpdated: "--:--"
     property string command: "headsetcontrol -b -o json"
+    property int lowBatteryThreshold: 20
+    property bool lowBatteryNotified: false
 
     function parseOutput(text) {
         var now = new Date();
@@ -67,7 +69,27 @@ PlasmoidItem {
 
         if (typeof level === "number") {
             batteryLevel = Math.max(0, Math.min(100, level));
+
+            if (batteryStatus !== "charging" && batteryLevel >= 0 && batteryLevel <= root.lowBatteryThreshold && !root.lowBatteryNotified) {
+                root.sendNotification("Low Battery", deviceLabel + " battery is at " + batteryLevel + "%");
+                root.lowBatteryNotified = true;
+            }
+            if (batteryLevel > root.lowBatteryThreshold) {
+                root.lowBatteryNotified = false;
+            }
         }
+    }
+
+    function sendNotification(title, message) {
+        var notification = Qt.createQmlObject(
+            "import org.kde.plasma.notifications 1.0; Notification {}",
+            root
+        );
+        notification.summary = title;
+        notification.body = message;
+        notification.iconName = "battery-low";
+        notification.timeout = 5000;
+        notification.show();
     }
 
     function batteryIconName() {
